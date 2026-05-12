@@ -2,17 +2,22 @@ use std::{
     thread::sleep,
     time::{Duration, Instant},
 };
-mod game_state;
+
+use osrs_engine::{GameCommand, GameEngine, GameState, Npc};
 
 fn main() {
     let tick_rate = Duration::from_millis(600);
     let mut next_tick = Instant::now();
 
-    let mut game_state = game_state::GameState::new();
-    game_state.add_npc(game_state::Npc::new(1, (5, 0), 10));
+    let mut game_state = GameState::new();
+    game_state.add_npc(Npc::new(1, (5, 0), 10));
+    let mut engine = GameEngine::new(game_state);
+    engine.enqueue_command(GameCommand::MovePlayer {
+        destination: (10, 0),
+    });
 
     loop {
-        game_loop(&mut game_state);
+        game_loop(&mut engine);
 
         next_tick += tick_rate;
 
@@ -26,8 +31,13 @@ fn main() {
     }
 }
 
-fn game_loop(game_state: &mut game_state::GameState) {
+fn game_loop(engine: &mut GameEngine) {
     println!("tick");
+
+    let result = engine.tick();
+
+    println!("events: {:?}", result.events);
+    println!("state: {:?}", engine.state());
 
     // Movement
     // If requested position, clear movement queue

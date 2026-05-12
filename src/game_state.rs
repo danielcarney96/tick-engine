@@ -1,4 +1,7 @@
-#[derive(Debug)]
+pub type Position = (u32, u32);
+pub type NpcId = u32;
+
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct GameState {
     pub player: Player,
     pub npcs: Vec<Npc>,
@@ -6,17 +9,18 @@ pub struct GameState {
     pub max_move_distance_run: u32,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Player {
-    pub position: (u32, u32),
+    pub position: Position,
+    pub movement_destination: Option<Position>,
     pub health: u32,
     pub is_running: bool,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Npc {
-    pub id: u32,
-    pub position: (u32, u32),
+    pub id: NpcId,
+    pub position: Position,
     pub health: u32,
 }
 
@@ -40,9 +44,10 @@ impl GameState {
 }
 
 impl Player {
-    pub fn new(position: (u32, u32)) -> Self {
+    pub fn new(position: Position) -> Self {
         Self {
             position,
+            movement_destination: None,
             health: 99,
             is_running: false,
         }
@@ -50,7 +55,7 @@ impl Player {
 }
 
 impl Npc {
-    pub fn new(id: u32, position: (u32, u32), health: u32) -> Self {
+    pub fn new(id: NpcId, position: Position, health: u32) -> Self {
         Self {
             id,
             position,
