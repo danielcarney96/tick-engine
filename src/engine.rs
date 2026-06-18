@@ -1,11 +1,13 @@
 use std::collections::VecDeque;
 
-use crate::game_state::{GameState, Position};
+use crate::game_state::{GameState, NpcId, Position};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum GameCommand {
     MovePlayer { destination: Position },
     SetRun { enabled: bool },
+    Attack { target: NpcId },
+    SetAutoRetaliate { enabled: bool },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -17,6 +19,21 @@ pub enum GameEvent {
         from: Position,
         to: Position,
     },
+    AutoRetaliateChanged {
+        enabled: bool,
+    },
+    PlayerAttacked {
+        target: NpcId,
+        damage: u32,
+    },
+    NpcAttacked {
+        attacker: NpcId,
+        damage: u32,
+    },
+    NpcDied {
+        id: NpcId,
+    },
+    PlayerDied,
     CommandRejected {
         command: GameCommand,
         reason: CommandRejectionReason,
@@ -27,6 +44,7 @@ pub enum GameEvent {
 pub enum CommandRejectionReason {
     AlreadyAtDestination,
     NoMovementAvailable,
+    TargetNotFound,
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
@@ -59,7 +77,9 @@ impl GameEngine {
             self.apply_command(command, &mut result);
         }
 
+        self.update_combat_pathing();
         self.advance_player_movement(&mut result);
+        self.resolve_combat(&mut result);
 
         result
     }
@@ -81,6 +101,24 @@ impl GameEngine {
                 if self.state.player.is_running != enabled {
                     self.state.player.is_running = enabled;
                     result.events.push(GameEvent::PlayerRunChanged { enabled });
+                }
+            }
+            GameCommand::Attack { target } => {
+                if self.state.npcs.iter().any(|npc| npc.id == target) {
+                    self.state.player.target = Some(target);
+                } else {
+                    result.events.push(GameEvent::CommandRejected {
+                        command: GameCommand::Attack { target },
+                        reason: CommandRejectionReason::TargetNotFound,
+                    });
+                }
+            }
+            GameCommand::SetAutoRetaliate { enabled } => {
+                if self.state.player.auto_retaliate != enabled {
+                    self.state.player.auto_retaliate = enabled;
+                    result
+                        .events
+                        .push(GameEvent::AutoRetaliateChanged { enabled });
                 }
             }
         }
@@ -131,6 +169,104 @@ impl GameEngine {
         }
         result.events.push(GameEvent::PlayerMoved { from, to });
     }
+
+    /// Walk the player toward its combat target until within attack range, then stop.
+    fn update_combat_pathing(&mut self) {
+        let Some(target) = self.state.player.target else {
+            return;
+        };
+        let Some(npc) = self.state.npcs.iter().find(|npc| npc.id == target) else {
+            return;
+        };
+
+        if in_range(self.state.player.position, npc.position, self.state.attack_range) {
+            self.state.player.movement_destination = None;
+        } else {
+            // stop-at-adjacent pathing when collision/positioning matters.
+            self.state.player.movement_destination = Some(npc.position);
+        }
+    }
+
+    fn resolve_combat(&mut self, result: &mut TickResult) {
+        self.state.player.attack_cooldown = self.state.player.attack_cooldown.saturating_sub(1);
+        for npc in &mut self.state.npcs {
+            npc.attack_cooldown = npc.attack_cooldown.saturating_sub(1);
+        }
+
+        self.resolve_player_attack(result);
+        self.resolve_npc_attacks(result);
+    }
+
+    fn resolve_player_attack(&mut self, result: &mut TickResult) {
+        let Some(target) = self.state.player.target else {
+            return;
+        };
+        let Some(idx) = self.state.npcs.iter().position(|npc| npc.id == target) else {
+            self.state.player.target = None;
+            return;
+        };
+
+        let npc_pos = self.state.npcs[idx].position;
+        if !in_range(self.state.player.position, npc_pos, self.state.attack_range)
+            || self.state.player.attack_cooldown > 0
+        {
+            return;
+        }
+
+        let damage = self.state.player_attack_damage;
+        let npc = &mut self.state.npcs[idx];
+        npc.in_combat = true;
+        npc.health = npc.health.saturating_sub(damage);
+        self.state.player.attack_cooldown = self.state.attack_speed;
+        result.events.push(GameEvent::PlayerAttacked { target, damage });
+
+        if self.state.npcs[idx].health == 0 {
+            self.state.npcs.remove(idx);
+            self.state.player.target = None;
+            result.events.push(GameEvent::NpcDied { id: target });
+        }
+    }
+
+    fn resolve_npc_attacks(&mut self, result: &mut TickResult) {
+        let player_pos = self.state.player.position;
+        let range = self.state.attack_range;
+        let damage = self.state.npc_attack_damage;
+        let attack_speed = self.state.attack_speed;
+
+        for i in 0..self.state.npcs.len() {
+            if self.state.player.health == 0 {
+                break;
+            }
+
+            let npc = &self.state.npcs[i];
+            let engaged = npc.aggressive || npc.in_combat;
+            if !engaged
+                || npc.attack_cooldown > 0
+                || !in_range(npc.position, player_pos, range)
+            {
+                continue;
+            }
+
+            let attacker = npc.id;
+            self.state.npcs[i].in_combat = true;
+            self.state.npcs[i].attack_cooldown = attack_speed;
+            self.state.player.health = self.state.player.health.saturating_sub(damage);
+            result.events.push(GameEvent::NpcAttacked { attacker, damage });
+
+            if self.state.player.auto_retaliate && self.state.player.target.is_none() {
+                self.state.player.target = Some(attacker);
+            }
+
+            if self.state.player.health == 0 {
+                result.events.push(GameEvent::PlayerDied);
+            }
+        }
+    }
+}
+
+/// Chebyshev distance: how OSRS measures melee/attack range on the tile grid.
+fn in_range(a: Position, b: Position, range: u32) -> bool {
+    a.0.abs_diff(b.0).max(a.1.abs_diff(b.1)) <= range
 }
 
 fn step_toward(from: Position, destination: Position, max_distance: u32) -> Position {

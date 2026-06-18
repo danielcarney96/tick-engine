@@ -52,6 +52,8 @@ fn print_help() {
     println!("commands:");
     println!("  move <x> <y>");
     println!("  run <on|off>");
+    println!("  attack <npc_id>");
+    println!("  retaliate <on|off>");
     println!("  tick");
     println!("  state");
     println!("  help");

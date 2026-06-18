@@ -7,6 +7,10 @@ pub struct GameState {
     pub npcs: Vec<Npc>,
     pub max_move_distance_walk: u32,
     pub max_move_distance_run: u32,
+    pub attack_range: u32,
+    pub attack_speed: u32,
+    pub player_attack_damage: u32,
+    pub npc_attack_damage: u32,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -15,6 +19,9 @@ pub struct Player {
     pub movement_destination: Option<Position>,
     pub health: u32,
     pub is_running: bool,
+    pub target: Option<NpcId>,
+    pub auto_retaliate: bool,
+    pub attack_cooldown: u32,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -22,6 +29,9 @@ pub struct Npc {
     pub id: NpcId,
     pub position: Position,
     pub health: u32,
+    pub aggressive: bool,
+    pub in_combat: bool,
+    pub attack_cooldown: u32,
 }
 
 impl GameState {
@@ -31,6 +41,10 @@ impl GameState {
             npcs: Vec::new(),
             max_move_distance_walk: 1,
             max_move_distance_run: 2,
+            attack_range: 1,
+            attack_speed: 4,
+            player_attack_damage: 3,
+            npc_attack_damage: 1,
         }
     }
 
@@ -50,6 +64,9 @@ impl Player {
             movement_destination: None,
             health: 99,
             is_running: false,
+            target: None,
+            auto_retaliate: false,
+            attack_cooldown: 0,
         }
     }
 }
@@ -60,6 +77,9 @@ impl Npc {
             id,
             position,
             health,
+            aggressive: false,
+            in_combat: false,
+            attack_cooldown: 0,
         }
     }
 }

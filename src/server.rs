@@ -35,7 +35,9 @@ fn run_at(addr: &str) -> io::Result<()> {
     });
 
     let mut game_state = GameState::new();
-    game_state.add_npc(Npc::new(1, (5, 0), 10));
+    let mut goblin = Npc::new(1, (5, 0), 10);
+    goblin.aggressive = true;
+    game_state.add_npc(goblin);
     let mut runtime = EngineRuntime::new(game_state);
     let mut next_tick = Instant::now() + TICK_RATE;
 
@@ -90,6 +92,8 @@ pub(crate) fn parse_server_input(input: &str) -> Result<ServerInput, String> {
     match command {
         "move" => parse_move_command(&parts),
         "run" => parse_run_command(&parts),
+        "attack" => parse_attack_command(&parts),
+        "retaliate" => parse_retaliate_command(&parts),
         "tick" => Ok(ServerInput::Tick),
         "state" => Ok(ServerInput::State),
         "help" => Ok(ServerInput::Help),
@@ -121,6 +125,31 @@ fn parse_run_command(parts: &[&str]) -> Result<ServerInput, String> {
     };
 
     Ok(ServerInput::Command(GameCommand::SetRun { enabled }))
+}
+
+fn parse_attack_command(parts: &[&str]) -> Result<ServerInput, String> {
+    if parts.len() != 2 {
+        return Err("usage: attack <npc_id>".to_string());
+    }
+
+    let target = parts[1]
+        .parse::<u32>()
+        .map_err(|_| format!("invalid npc id: {}", parts[1]))?;
+    Ok(ServerInput::Command(GameCommand::Attack { target }))
+}
+
+fn parse_retaliate_command(parts: &[&str]) -> Result<ServerInput, String> {
+    if parts.len() != 2 {
+        return Err("usage: retaliate <on|off>".to_string());
+    }
+
+    let enabled = match parts[1] {
+        "on" => true,
+        "off" => false,
+        value => return Err(format!("invalid retaliate mode: {value}; expected on or off")),
+    };
+
+    Ok(ServerInput::Command(GameCommand::SetAutoRetaliate { enabled }))
 }
 
 fn parse_position(x: &str, y: &str) -> Result<Position, String> {
@@ -221,15 +250,18 @@ fn format_tick_result(result: TickResult) -> String {
 
 fn format_state(state: &GameState) -> String {
     format!(
-        "player: position={:?}, destination={:?}, hp={}, running={}; npcs: {:?}",
+        "player: position={:?}, destination={:?}, hp={}, running={}, target={:?}, auto_retaliate={}; npcs: {:?}",
         state.player.position,
         state.player.movement_destination,
         state.player.health,
         state.player.is_running,
+        state.player.target,
+        state.player.auto_retaliate,
         state.npcs
     )
 }
 
 fn help_text() -> String {
-    "commands: move <x> <y>; run <on|off>; tick; state; help; quit".to_string()
+    "commands: move <x> <y>; run <on|off>; attack <npc_id>; retaliate <on|off>; tick; state; help; quit"
+        .to_string()
 }

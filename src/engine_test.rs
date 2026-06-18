@@ -8,10 +8,14 @@ fn callers_can_construct_arbitrary_state() {
             movement_destination: Some((12, 10)),
             health: 42,
             is_running: true,
+            target: None,
+            auto_retaliate: false,
+            attack_cooldown: 0,
         },
         npcs: vec![Npc::new(1, (5, 5), 100), Npc::new(2, (8, 8), 250)],
         max_move_distance_walk: 1,
         max_move_distance_run: 2,
+        ..GameState::new()
     };
 
     assert_eq!(state.player.position, (10, 10));
@@ -199,4 +203,125 @@ fn queued_commands_are_processed_fifo_before_movement_advances() {
             },
         ]
     );
+}
+
+fn combat_state() -> GameState {
+    let mut state = GameState::new();
+    state.player = Player::new((0, 0));
+    state.attack_speed = 2;
+    state.player_attack_damage = 4;
+    state.npc_attack_damage = 3;
+    state
+}
+
+#[test]
+fn attacking_an_unknown_npc_is_rejected() {
+    let mut engine = GameEngine::new(combat_state());
+
+    engine.enqueue_command(GameCommand::Attack { target: 99 });
+    let result = engine.tick();
+
+    assert_eq!(engine.state().player.target, None);
+    assert_eq!(
+        result.events,
+        vec![GameEvent::CommandRejected {
+            command: GameCommand::Attack { target: 99 },
+            reason: CommandRejectionReason::TargetNotFound,
+        }]
+    );
+}
+
+#[test]
+fn player_walks_to_target_then_hits_on_attack_speed_cadence() {
+    let mut state = combat_state();
+    state.add_npc(Npc::new(1, (2, 0), 10));
+    let mut engine = GameEngine::new(state);
+
+    engine.enqueue_command(GameCommand::Attack { target: 1 });
+
+    // Out of range: steps to (1, 0), now adjacent — but cooldown lets it swing same tick.
+    let first = engine.tick();
+    assert_eq!(engine.state().player.position, (1, 0));
+    assert!(first.events.contains(&GameEvent::PlayerAttacked {
+        target: 1,
+        damage: 4
+    }));
+    assert_eq!(engine.state().npcs[0].health, 6);
+
+    // On cooldown this tick: no hit.
+    let second = engine.tick();
+    assert!(!second
+        .events
+        .iter()
+        .any(|e| matches!(e, GameEvent::PlayerAttacked { .. })));
+
+    // Cooldown elapsed: hits again.
+    let third = engine.tick();
+    assert!(third.events.contains(&GameEvent::PlayerAttacked {
+        target: 1,
+        damage: 4
+    }));
+    assert_eq!(engine.state().npcs[0].health, 2);
+}
+
+#[test]
+fn killing_an_npc_removes_it_and_clears_the_target() {
+    let mut state = combat_state();
+    state.add_npc(Npc::new(1, (1, 0), 4));
+    let mut engine = GameEngine::new(state);
+
+    engine.enqueue_command(GameCommand::Attack { target: 1 });
+    let result = engine.tick();
+
+    assert!(engine.state().npcs.is_empty());
+    assert_eq!(engine.state().player.target, None);
+    assert!(result.events.contains(&GameEvent::NpcDied { id: 1 }));
+}
+
+#[test]
+fn aggressive_npc_hits_player_and_auto_retaliate_fights_back() {
+    let mut state = combat_state();
+    state.player.auto_retaliate = true;
+    let mut npc = Npc::new(1, (1, 0), 10);
+    npc.aggressive = true;
+    state.add_npc(npc);
+    let mut engine = GameEngine::new(state);
+
+    // Player never issued an attack; the adjacent aggressive npc strikes first.
+    let result = engine.tick();
+
+    assert_eq!(engine.state().player.health, 96);
+    assert!(result.events.contains(&GameEvent::NpcAttacked {
+        attacker: 1,
+        damage: 3
+    }));
+    // Auto-retaliate latched the attacker as the player's target.
+    assert_eq!(engine.state().player.target, Some(1));
+}
+
+#[test]
+fn passive_npc_does_not_attack_until_provoked() {
+    let mut state = combat_state();
+    state.add_npc(Npc::new(1, (1, 0), 10)); // not aggressive
+    let mut engine = GameEngine::new(state);
+
+    let idle = engine.tick();
+    assert_eq!(engine.state().player.health, 99);
+    assert!(!idle
+        .events
+        .iter()
+        .any(|e| matches!(e, GameEvent::NpcAttacked { .. })));
+
+    // Provoke it: the player's hit marks it in_combat, so it strikes back the same tick.
+    engine.enqueue_command(GameCommand::Attack { target: 1 });
+    let provoked = engine.tick();
+    assert!(provoked.events.contains(&GameEvent::PlayerAttacked {
+        target: 1,
+        damage: 4
+    }));
+    assert!(provoked.events.iter().any(|e| matches!(
+        e,
+        GameEvent::NpcAttacked { attacker: 1, .. }
+    )));
+    assert_eq!(engine.state().player.health, 96);
 }
