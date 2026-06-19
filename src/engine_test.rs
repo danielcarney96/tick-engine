@@ -70,6 +70,29 @@ fn move_player_walks_one_tile_when_not_running() {
 }
 
 #[test]
+fn move_player_steps_diagonally_toward_destination() {
+    let mut state = GameState::new();
+    state.player.is_running = true; // run = 2 tiles of Chebyshev movement
+    let mut engine = GameEngine::new(state);
+
+    engine.enqueue_command(GameCommand::MovePlayer {
+        destination: (5, 5),
+    });
+    let result = engine.tick();
+
+    // Both axes advance together: a diagonal tile costs one step, so running
+    // covers (0,0) -> (2,2), not (2,0).
+    assert_eq!(engine.state().player.position, (2, 2));
+    assert_eq!(
+        result.events,
+        vec![GameEvent::PlayerMoved {
+            from: (0, 0),
+            to: (2, 2)
+        }]
+    );
+}
+
+#[test]
 fn move_player_runs_two_tiles_when_running() {
     let mut state = GameState::new();
     state.player.is_running = true;

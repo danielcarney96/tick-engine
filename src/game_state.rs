@@ -1,7 +1,9 @@
+use serde::{Deserialize, Serialize};
+
 pub type Position = (u32, u32);
 pub type NpcId = u32;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GameState {
     pub player: Player,
     pub npcs: Vec<Npc>,
@@ -13,7 +15,7 @@ pub struct GameState {
     pub npc_attack_damage: u32,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Player {
     pub position: Position,
     pub movement_destination: Option<Position>,
@@ -24,7 +26,7 @@ pub struct Player {
     pub attack_cooldown: u32,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Npc {
     pub id: NpcId,
     pub position: Position,

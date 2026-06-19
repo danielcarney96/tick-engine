@@ -1,8 +1,10 @@
 use std::collections::VecDeque;
 
+use serde::{Deserialize, Serialize};
+
 use crate::game_state::{GameState, NpcId, Position};
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum GameCommand {
     MovePlayer { destination: Position },
     SetRun { enabled: bool },
@@ -10,7 +12,7 @@ pub enum GameCommand {
     SetAutoRetaliate { enabled: bool },
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum GameEvent {
     PlayerRunChanged {
         enabled: bool,
@@ -40,14 +42,14 @@ pub enum GameEvent {
     },
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CommandRejectionReason {
     AlreadyAtDestination,
     NoMovementAvailable,
     TargetNotFound,
 }
 
-#[derive(Clone, Debug, Default, PartialEq, Eq)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TickResult {
     pub events: Vec<GameEvent>,
 }
@@ -270,24 +272,17 @@ fn in_range(a: Position, b: Position, range: u32) -> bool {
 }
 
 fn step_toward(from: Position, destination: Position, max_distance: u32) -> Position {
-    let mut remaining = max_distance;
-    let mut x = from.0;
-    let mut y = from.1;
-
-    let x_step = remaining.min(x.abs_diff(destination.0));
-    if x < destination.0 {
-        x += x_step;
-    } else {
-        x -= x_step;
+    // Chebyshev movement (matches `in_range`): one tile of movement can advance
+    // both axes at once, so a diagonal step costs the same as a straight one.
+    let (mut x, mut y) = from;
+    for _ in 0..max_distance {
+        if (x, y) == destination {
+            break;
+        }
+        x += (x < destination.0) as u32;
+        x -= (x > destination.0) as u32;
+        y += (y < destination.1) as u32;
+        y -= (y > destination.1) as u32;
     }
-    remaining -= x_step;
-
-    let y_step = remaining.min(y.abs_diff(destination.1));
-    if y < destination.1 {
-        y += y_step;
-    } else {
-        y -= y_step;
-    }
-
     (x, y)
 }

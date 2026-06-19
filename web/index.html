@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>osrs-engine</title>
+<style>
+  body { background:#2b2b2b; color:#e0d8c0; font-family:monospace; margin:0; padding:16px; }
+  #wrap { display:flex; gap:16px; align-items:flex-start; }
+  canvas { background:#5a6b3b; border:3px solid #1a1a1a; cursor:crosshair; image-rendering:pixelated; }
+  #side { width:260px; }
+  button { font-family:monospace; background:#3c3c3c; color:#e0d8c0; border:1px solid #000; padding:4px 8px; margin:2px 0; cursor:pointer; }
+  button.on { background:#6b5a1f; }
+  #log { height:220px; overflow:auto; background:#1a1a1a; border:1px solid #000; padding:6px; font-size:12px; white-space:pre-wrap; }
+  .hint { color:#9a9; font-size:12px; }
+</style>
+</head>
+<body>
+<h2>osrs-engine</h2>
+<div id="wrap">
+  <canvas id="map" width="512" height="384"></canvas>
+  <div id="side">
+    <div id="stats">connecting…</div>
+    <div class="hint">click a tile to move · click an npc to attack</div>
+    <button id="run">run: off</button>
+    <button id="retaliate">auto-retaliate: off</button>
+    <h3>events</h3>
+    <div id="log"></div>
+  </div>
+</div>
+<script>
+const TILE = 32, COLS = 16, ROWS = 12;
+const canvas = document.getElementById("map");
+const ctx = canvas.getContext("2d");
+const logEl = document.getElementById("log");
+const statsEl = document.getElementById("stats");
+const runBtn = document.getElementById("run");
+const retalBtn = document.getElementById("retaliate");
+
+let world = null; // latest GameState
+
+// Engine y grows north; draw with origin at bottom-left so it reads like OSRS.
+const sx = x => x * TILE;
+const sy = y => (ROWS - 1 - y) * TILE;
+// Inverse, for click -> tile.
+const tileFromPx = (px, py) => [Math.floor(px / TILE), ROWS - 1 - Math.floor(py / TILE)];
+
+const ws = new WebSocket(`ws://${location.host}/ws`);
+ws.onmessage = ev => {
+  const snap = JSON.parse(ev.data);
+  world = snap.state;
+  for (const e of snap.events) logEvent(e);
+  draw();
+  updateStats();
+};
+ws.onclose = () => statsEl.textContent = "disconnected";
+
+function send(cmd) {
+  if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(cmd));
+}
+
+canvas.addEventListener("click", e => {
+  if (!world) return;
+  const r = canvas.getBoundingClientRect();
+  const [tx, ty] = tileFromPx(e.clientX - r.left, e.clientY - r.top);
+  const npc = world.npcs.find(n => n.position[0] === tx && n.position[1] === ty);
+  if (npc) send({ Attack: { target: npc.id } });
+  else send({ MovePlayer: { destination: [tx, ty] } });
+});
+
+runBtn.onclick = () => send({ SetRun: { enabled: !world?.player.is_running } });
+retalBtn.onclick = () => send({ SetAutoRetaliate: { enabled: !world?.player.auto_retaliate } });
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // grid
+  ctx.strokeStyle = "rgba(0,0,0,0.25)";
+  for (let x = 0; x <= COLS; x++) { ctx.beginPath(); ctx.moveTo(x*TILE,0); ctx.lineTo(x*TILE,ROWS*TILE); ctx.stroke(); }
+  for (let y = 0; y <= ROWS; y++) { ctx.beginPath(); ctx.moveTo(0,y*TILE); ctx.lineTo(COLS*TILE,y*TILE); ctx.stroke(); }
+  if (!world) return;
+
+  // movement destination marker
+  const dest = world.player.movement_destination;
+  if (dest) { ctx.fillStyle = "rgba(255,255,0,0.3)"; ctx.fillRect(sx(dest[0]), sy(dest[1]), TILE, TILE); }
+
+  for (const n of world.npcs) drawActor(n.position, n.aggressive ? "#b03030" : "#c08030", n.health, n.id);
+  drawActor(world.player.position, "#3060c0", world.player.health, null, world.player.target);
+}
+
+function drawActor(pos, color, hp, id, target) {
+  const x = sx(pos[0]), y = sy(pos[1]);
+  ctx.fillStyle = color;
+  ctx.fillRect(x + 4, y + 4, TILE - 8, TILE - 8);
+  ctx.fillStyle = "#fff";
+  ctx.font = "10px monospace";
+  ctx.fillText(hp, x + 6, y + TILE - 5);
+  if (id != null) ctx.fillText("#" + id, x + 6, y + 12);
+  if (target != null) { ctx.strokeStyle = "#fff"; ctx.strokeRect(x + 2, y + 2, TILE - 4, TILE - 4); }
+}
+
+function updateStats() {
+  if (!world) return;
+  const p = world.player;
+  statsEl.innerHTML =
+    `pos: (${p.position[0]}, ${p.position[1]})<br>` +
+    `hp: ${p.health}<br>` +
+    `target: ${p.target ?? "none"}<br>` +
+    `npcs: ${world.npcs.length}`;
+  runBtn.textContent = "run: " + (p.is_running ? "on" : "off");
+  runBtn.classList.toggle("on", p.is_running);
+  retalBtn.textContent = "auto-retaliate: " + (p.auto_retaliate ? "on" : "off");
+  retalBtn.classList.toggle("on", p.auto_retaliate);
+}
+
+function logEvent(e) {
+  const line = document.createElement("div");
+  line.textContent = JSON.stringify(e);
+  logEl.prepend(line);
+  while (logEl.childNodes.length > 50) logEl.lastChild.remove();
+}
+</script>
+</body>
+</html>

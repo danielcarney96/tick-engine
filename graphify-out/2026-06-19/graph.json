@@ -156,7 +156,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "gamecommand",
-      "community": 15,
+      "community": 6,
       "norm_label": "gamecommand"
     },
     {
@@ -560,20 +560,10 @@
       "norm_label": "move_player_walks_one_tile_when_not_running()"
     },
     {
-      "label": "move_player_steps_diagonally_toward_destination()",
-      "file_type": "code",
-      "source_file": "src/engine_test.rs",
-      "source_location": "L73",
-      "_origin": "ast",
-      "id": "src_engine_test_move_player_steps_diagonally_toward_destination",
-      "community": 2,
-      "norm_label": "move_player_steps_diagonally_toward_destination()"
-    },
-    {
       "label": "move_player_runs_two_tiles_when_running()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L96",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "src_engine_test_move_player_runs_two_tiles_when_running",
       "community": 2,
@@ -583,7 +573,7 @@
       "label": "single_move_command_continues_across_ticks_until_destination_is_reached()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L118",
+      "source_location": "L95",
       "_origin": "ast",
       "id": "src_engine_test_single_move_command_continues_across_ticks_until_destination_is_reached",
       "community": 2,
@@ -593,7 +583,7 @@
       "label": "no_op_movement_is_rejected_without_mutating_position()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L157",
+      "source_location": "L134",
       "_origin": "ast",
       "id": "src_engine_test_no_op_movement_is_rejected_without_mutating_position",
       "community": 2,
@@ -603,7 +593,7 @@
       "label": "zero_movement_distance_keeps_destination_for_future_ticks()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L179",
+      "source_location": "L156",
       "_origin": "ast",
       "id": "src_engine_test_zero_movement_distance_keeps_destination_for_future_ticks",
       "community": 2,
@@ -613,7 +603,7 @@
       "label": "queued_commands_are_processed_fifo_before_movement_advances()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L203",
+      "source_location": "L180",
       "_origin": "ast",
       "id": "src_engine_test_queued_commands_are_processed_fifo_before_movement_advances",
       "community": 2,
@@ -623,7 +613,7 @@
       "label": "combat_state()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L231",
+      "source_location": "L208",
       "_origin": "ast",
       "id": "src_engine_test_combat_state",
       "community": 2,
@@ -633,7 +623,7 @@
       "label": "GameState",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L231",
+      "source_location": "L208",
       "_origin": "ast",
       "id": "src_engine_test_rs_gamestate",
       "community": 2,
@@ -643,7 +633,7 @@
       "label": "attacking_an_unknown_npc_is_rejected()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L241",
+      "source_location": "L218",
       "_origin": "ast",
       "id": "src_engine_test_attacking_an_unknown_npc_is_rejected",
       "community": 2,
@@ -653,7 +643,7 @@
       "label": "player_walks_to_target_then_hits_on_attack_speed_cadence()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L258",
+      "source_location": "L235",
       "_origin": "ast",
       "id": "src_engine_test_player_walks_to_target_then_hits_on_attack_speed_cadence",
       "community": 2,
@@ -663,7 +653,7 @@
       "label": "killing_an_npc_removes_it_and_clears_the_target()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L291",
+      "source_location": "L268",
       "_origin": "ast",
       "id": "src_engine_test_killing_an_npc_removes_it_and_clears_the_target",
       "community": 2,
@@ -673,7 +663,7 @@
       "label": "aggressive_npc_hits_player_and_auto_retaliate_fights_back()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L305",
+      "source_location": "L282",
       "_origin": "ast",
       "id": "src_engine_test_aggressive_npc_hits_player_and_auto_retaliate_fights_back",
       "community": 2,
@@ -683,7 +673,7 @@
       "label": "passive_npc_does_not_attack_until_provoked()",
       "file_type": "code",
       "source_file": "src/engine_test.rs",
-      "source_location": "L326",
+      "source_location": "L303",
       "_origin": "ast",
       "id": "src_engine_test_passive_npc_does_not_attack_until_provoked",
       "community": 2,
@@ -1356,7 +1346,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_server_test",
-      "community": 15,
+      "community": 6,
       "norm_label": "server_test.rs"
     },
     {
@@ -1366,7 +1356,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_server_test_parses_move_command",
-      "community": 15,
+      "community": 6,
       "norm_label": "parses_move_command()"
     },
     {
@@ -1376,7 +1366,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_server_test_parses_run_commands",
-      "community": 15,
+      "community": 6,
       "norm_label": "parses_run_commands()"
     },
     {
@@ -1386,7 +1376,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_server_test_parses_server_control_commands",
-      "community": 15,
+      "community": 6,
       "norm_label": "parses_server_control_commands()"
     },
     {
@@ -1396,7 +1386,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_server_test_rejects_invalid_commands",
-      "community": 15,
+      "community": 6,
       "norm_label": "rejects_invalid_commands()"
     },
     {
@@ -1756,9 +1746,9 @@
       "source_file": "src/bin/sim.rs",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_sim",
-      "target": "bin_sim_main"
+      "target": "bin_sim_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1766,9 +1756,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L37",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web",
-      "target": "bin_web_appstate"
+      "target": "bin_web_appstate",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1776,9 +1766,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L95",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web",
-      "target": "bin_web_client"
+      "target": "bin_web_client",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1786,9 +1776,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L43",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web",
-      "target": "bin_web_main"
+      "target": "bin_web_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1796,9 +1786,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L81",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web",
-      "target": "bin_web_seed_world"
+      "target": "bin_web_seed_world",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1806,9 +1796,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L133",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web",
-      "target": "bin_web_send_snapshot"
+      "target": "bin_web_send_snapshot",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1816,9 +1806,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L31",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web",
-      "target": "bin_web_snapshot"
+      "target": "bin_web_snapshot",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1826,9 +1816,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L91",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web",
-      "target": "bin_web_ws_handler"
+      "target": "bin_web_ws_handler",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1837,9 +1827,9 @@
       "source_location": "L39",
       "weight": 1.0,
       "context": "generic_arg",
-      "confidence_score": 1.0,
       "source": "bin_web_appstate",
-      "target": "bin_web_snapshot"
+      "target": "bin_web_snapshot",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1848,9 +1838,9 @@
       "source_location": "L133",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "bin_web_send_snapshot",
-      "target": "bin_web_snapshot"
+      "target": "bin_web_snapshot",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1859,9 +1849,9 @@
       "source_location": "L33",
       "weight": 1.0,
       "context": "generic_arg",
-      "confidence_score": 1.0,
       "source": "bin_web_snapshot",
-      "target": "gameevent"
+      "target": "gameevent",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1870,9 +1860,9 @@
       "source_location": "L32",
       "weight": 1.0,
       "context": "field",
-      "confidence_score": 1.0,
       "source": "bin_web_snapshot",
-      "target": "src_bin_web_rs_gamestate"
+      "target": "src_bin_web_rs_gamestate",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1881,9 +1871,9 @@
       "source_location": "L33",
       "weight": 1.0,
       "context": "field",
-      "confidence_score": 1.0,
       "source": "bin_web_snapshot",
-      "target": "src_bin_web_rs_vec"
+      "target": "src_bin_web_rs_vec",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1892,9 +1882,9 @@
       "source_location": "L81",
       "weight": 1.0,
       "context": "return_type",
-      "confidence_score": 1.0,
       "source": "bin_web_seed_world",
-      "target": "src_bin_web_rs_gamestate"
+      "target": "src_bin_web_rs_gamestate",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1903,9 +1893,9 @@
       "source_location": "L38",
       "weight": 1.0,
       "context": "generic_arg",
-      "confidence_score": 1.0,
       "source": "bin_web_appstate",
-      "target": "gamecommand"
+      "target": "gamecommand",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1914,9 +1904,9 @@
       "source_location": "L39",
       "weight": 1.0,
       "context": "field",
-      "confidence_score": 1.0,
       "source": "bin_web_appstate",
-      "target": "receiver"
+      "target": "receiver",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1925,9 +1915,9 @@
       "source_location": "L38",
       "weight": 1.0,
       "context": "field",
-      "confidence_score": 1.0,
       "source": "bin_web_appstate",
-      "target": "src_bin_web_rs_sender"
+      "target": "src_bin_web_rs_sender",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1936,9 +1926,9 @@
       "source_location": "L95",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "bin_web_client",
-      "target": "bin_web_appstate"
+      "target": "bin_web_appstate",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1947,9 +1937,9 @@
       "source_location": "L91",
       "weight": 1.0,
       "context": "generic_arg",
-      "confidence_score": 1.0,
       "source": "bin_web_ws_handler",
-      "target": "bin_web_appstate"
+      "target": "bin_web_appstate",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -1958,9 +1948,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "context": "import",
-      "confidence_score": 1.0,
       "source": "src_server_test",
-      "target": "gamecommand"
+      "target": "gamecommand",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -1969,9 +1959,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L44",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web_main",
-      "target": "bin_web_seed_world"
+      "target": "bin_web_seed_world",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -1980,9 +1970,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L92",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web_ws_handler",
-      "target": "bin_web_client"
+      "target": "bin_web_client",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1991,9 +1981,9 @@
       "source_location": "L91",
       "weight": 1.0,
       "context": "return_type",
-      "confidence_score": 1.0,
       "source": "bin_web_ws_handler",
-      "target": "response"
+      "target": "response",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2002,9 +1992,9 @@
       "source_location": "L91",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "bin_web_ws_handler",
-      "target": "state"
+      "target": "state",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2013,9 +2003,9 @@
       "source_location": "L91",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "bin_web_ws_handler",
-      "target": "websocketupgrade"
+      "target": "websocketupgrade",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2024,9 +2014,9 @@
       "source_file": "src/bin/web.rs",
       "source_location": "L101",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "bin_web_client",
-      "target": "bin_web_send_snapshot"
+      "target": "bin_web_send_snapshot",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2035,9 +2025,9 @@
       "source_location": "L95",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "bin_web_client",
-      "target": "websocket"
+      "target": "websocket",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2046,9 +2036,9 @@
       "source_location": "L133",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "bin_web_send_snapshot",
-      "target": "websocket"
+      "target": "websocket",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2057,9 +2047,9 @@
       "source_location": "L133",
       "weight": 1.0,
       "context": "return_type",
-      "confidence_score": 1.0,
       "source": "bin_web_send_snapshot",
-      "target": "src_bin_web_rs_result"
+      "target": "src_bin_web_rs_result",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2673,16 +2663,6 @@
       "confidence_score": 1.0,
       "source": "src_engine_test",
       "target": "src_engine_test_move_player_runs_two_tiles_when_running"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/engine_test.rs",
-      "source_location": "L73",
-      "weight": 1.0,
-      "source": "src_engine_test",
-      "target": "src_engine_test_move_player_steps_diagonally_toward_destination",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3690,9 +3670,9 @@
       "source_location": "L73",
       "weight": 1.0,
       "context": "field",
-      "confidence_score": 1.0,
       "source": "src_server_serverrequest",
-      "target": "src_server_rs_sender"
+      "target": "src_server_rs_sender",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3723,9 +3703,9 @@
       "source_location": "L196",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "src_server_dispatch_line",
-      "target": "src_server_rs_sender"
+      "target": "src_server_rs_sender",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3734,9 +3714,9 @@
       "source_location": "L174",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "src_server_handle_client",
-      "target": "src_server_rs_sender"
+      "target": "src_server_rs_sender",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3745,9 +3725,9 @@
       "source_location": "L166",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "src_server_spawn_client_handler",
-      "target": "src_server_rs_sender"
+      "target": "src_server_rs_sender",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -4191,9 +4171,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude",
-      "target": "claude_agent_skills"
+      "target": "claude_agent_skills",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4201,9 +4181,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude",
-      "target": "claude_graphify"
+      "target": "claude_graphify",
+      "confidence_score": 1.0
     },
     {
       "relation": "conceptually_related_to",
@@ -4251,9 +4231,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L21",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_agent_skills",
-      "target": "claude_domain_docs"
+      "target": "claude_domain_docs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4261,9 +4241,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L13",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_agent_skills",
-      "target": "claude_issue_tracker"
+      "target": "claude_issue_tracker",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4271,9 +4251,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L17",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_agent_skills",
-      "target": "claude_triage_labels"
+      "target": "claude_triage_labels",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4281,9 +4261,9 @@
       "source_file": "docs/agents/domain.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_domain",
-      "target": "agents_domain_domain_docs"
+      "target": "agents_domain_domain_docs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4291,9 +4271,9 @@
       "source_file": "docs/agents/domain.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_domain_domain_docs",
-      "target": "agents_domain_before_exploring_read_these"
+      "target": "agents_domain_before_exploring_read_these",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4301,9 +4281,9 @@
       "source_file": "docs/agents/domain.md",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_domain_domain_docs",
-      "target": "agents_domain_file_structure"
+      "target": "agents_domain_file_structure",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4311,9 +4291,9 @@
       "source_file": "docs/agents/domain.md",
       "source_location": "L31",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_domain_domain_docs",
-      "target": "agents_domain_flag_adr_conflicts"
+      "target": "agents_domain_flag_adr_conflicts",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4321,9 +4301,9 @@
       "source_file": "docs/agents/domain.md",
       "source_location": "L25",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_domain_domain_docs",
-      "target": "agents_domain_use_the_glossary_s_vocabulary"
+      "target": "agents_domain_use_the_glossary_s_vocabulary",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4331,9 +4311,9 @@
       "source_file": "docs/agents/issue-tracker.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_issue_tracker",
-      "target": "agents_issue_tracker_issue_tracker_local_markdown"
+      "target": "agents_issue_tracker_issue_tracker_local_markdown",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4341,9 +4321,9 @@
       "source_file": "docs/agents/issue-tracker.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_issue_tracker_issue_tracker_local_markdown",
-      "target": "agents_issue_tracker_conventions"
+      "target": "agents_issue_tracker_conventions",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4351,9 +4331,9 @@
       "source_file": "docs/agents/issue-tracker.md",
       "source_location": "L17",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_issue_tracker_issue_tracker_local_markdown",
-      "target": "agents_issue_tracker_when_a_skill_says_fetch_the_relevant_ticket"
+      "target": "agents_issue_tracker_when_a_skill_says_fetch_the_relevant_ticket",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4361,9 +4341,9 @@
       "source_file": "docs/agents/issue-tracker.md",
       "source_location": "L13",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_issue_tracker_issue_tracker_local_markdown",
-      "target": "agents_issue_tracker_when_a_skill_says_publish_to_the_issue_tracker"
+      "target": "agents_issue_tracker_when_a_skill_says_publish_to_the_issue_tracker",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4371,9 +4351,9 @@
       "source_file": "docs/agents/triage-labels.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "agents_triage_labels",
-      "target": "agents_triage_labels_triage_labels"
+      "target": "agents_triage_labels_triage_labels",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
