@@ -1,0 +1,62 @@
+{
+  "/Users/dan/Projects/osrs-engine/.claude/settings.json": {
+    "mtime": 1781900509.5451462,
+    "ast_hash": "e1073342e958ac9f00716938c8f165e3",
+    "semantic_hash": "e1073342e958ac9f00716938c8f165e3"
+  },
+  "/Users/dan/Projects/osrs-engine/src/bin/cli.rs": {
+    "mtime": 1781809376.884217,
+    "ast_hash": "ae1bf7c60a5801898f5a0487826e0e5f",
+    "semantic_hash": "ae1bf7c60a5801898f5a0487826e0e5f"
+  },
+  "/Users/dan/Projects/osrs-engine/src/engine.rs": {
+    "mtime": 1781809703.8694282,
+    "ast_hash": "7e1bfaacb850c895e7913958ff4757c0",
+    "semantic_hash": "7e1bfaacb850c895e7913958ff4757c0"
+  },
+  "/Users/dan/Projects/osrs-engine/src/engine_test.rs": {
+    "mtime": 1781809416.2862902,
+    "ast_hash": "cfc093252d46f2c4491622f4e36e6949",
+    "semantic_hash": "cfc093252d46f2c4491622f4e36e6949"
+  },
+  "/Users/dan/Projects/osrs-engine/src/game_state.rs": {
+    "mtime": 1781809738.224762,
+    "ast_hash": "a2c69b3b1690cd674e449fd6949c209d",
+    "semantic_hash": "a2c69b3b1690cd674e449fd6949c209d"
+  },
+  "/Users/dan/Projects/osrs-engine/src/lib.rs": {
+    "mtime": 1778680037.797564,
+    "ast_hash": "7f95675cc29c92210177ae1e312f4a13",
+    "semantic_hash": "7f95675cc29c92210177ae1e312f4a13"
+  },
+  "/Users/dan/Projects/osrs-engine/src/main.rs": {
+    "mtime": 1778679117.6543202,
+    "ast_hash": "27460215458992baa9181d6bdf2dfbda",
+    "semantic_hash": "27460215458992baa9181d6bdf2dfbda"
+  },
+  "/Users/dan/Projects/osrs-engine/src/runtime.rs": {
+    "mtime": 1778680229.890685,
+    "ast_hash": "1221826ba71c04a048ac7a4ef4689600",
+    "semantic_hash": "1221826ba71c04a048ac7a4ef4689600"
+  },
+  "/Users/dan/Projects/osrs-engine/src/runtime_test.rs": {
+    "mtime": 1778680047.4566035,
+    "ast_hash": "77777fee77de3f52089d216515308a22",
+    "semantic_hash": "77777fee77de3f52089d216515308a22"
+  },
+  "/Users/dan/Projects/osrs-engine/src/server.rs": {
+    "mtime": 1781809371.4132094,
+    "ast_hash": "3d70e47534bbd90a8b06c42b992df194",
+    "semantic_hash": "3d70e47534bbd90a8b06c42b992df194"
+  },
+  "/Users/dan/Projects/osrs-engine/src/server_test.rs": {
+    "mtime": 1778679169.8471053,
+    "ast_hash": "9b40e25ee9e913e8995043ef5807e1f1",
+    "semantic_hash": "9b40e25ee9e913e8995043ef5807e1f1"
+  },
+  "/Users/dan/Projects/osrs-engine/CLAUDE.md": {
+    "mtime": 1781900509.544958,
+    "ast_hash": "82efb97a359f5c7290bf2513d14686be",
+    "semantic_hash": "82efb97a359f5c7290bf2513d14686be"
+  }
+}

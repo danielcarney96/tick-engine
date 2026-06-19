@@ -1,1 +1,3 @@
 /target
+/graphify-out/cache/
+.DS_Store
